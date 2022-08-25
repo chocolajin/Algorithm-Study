@@ -25,3 +25,38 @@ for tc in range(1,11):
                 rpoint += -1
 
     print(f'#{tc} {cpoint}')
+
+
+#code2 재귀
+# r : 행, c :열 , d : 방향
+def move(r,c,d):
+    if r == 99:
+        if ladder[r][c] == 2:
+            return True
+        else :
+            return False
+    if d == 0 :
+        if 0 <= c - 1 < 100 and ladder[r][c - 1]:  # 왼쪽으로 갈 수 있음
+            return move(r, c-1, 1)
+        elif 0 <= c + 1 < 100 and ladder[r][c + 1]:
+            return move(r, c + 1, 2)
+        else:
+            return move(r+dr[d], c, d)
+    else:
+        if 0 <= r + 1 < 100 and ladder[r + 1][c]:
+            return move(r + 1, c, 0)
+        else:
+            return move(r, c+dc[d], d)
+dr = [1, 0, 0]  # 방향 번호와 일치하도록 델타배열 선언
+dc = [0, -1, 1]
+for _ in range(10):
+    tc = input()
+    ladder = [list(map(int, input().split())) for _ in range(100)]
+    for i in range(100):    #모든 열 탐색
+        c = i
+        if ladder[0][i]:
+            result = move(0, i, 0)
+            # print (result)
+            if result:
+                print(f'#{tc} {i}')
+                break

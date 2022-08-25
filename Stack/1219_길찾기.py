@@ -72,3 +72,64 @@ for _ in range(T):
 
     result = dfs()
     print(f'#{tc} {result}')
+
+
+
+
+#code3
+def dfs2(v,visited):
+    visited[v] = 1
+    if v == 99:
+        return 1
+    #현재 노드에서 갈 수 있는 경로 찾기
+    for i in range(2):
+        # -1을 경로 초기값으로 잡아놓았으니.. 다른값이면 경로가 존재함
+        if path[i][v] != -1 and not visited[path[i][v]]:
+            if dfs2(path[i][v],visited) == 1:
+                return 1
+    return 0
+
+def dfs():
+    start = 0
+    visited = [0]*100
+    stack = [start]
+    visited[start] = 1
+    #스택이 비어있지 않으면, 계속 해서 경로탐색을 수행하겠다
+    while stack:
+        #stack의 top이 현재 위치
+        # current = stack[-1]
+        current = stack.pop()
+        if current == 99: # 목적지에 도착할 수 있음!
+            return 1
+        #현재위치에서 갈수 있는 경로를 찾아주면 됩니다
+        for i in range(2):
+            # -1을 경로 초기값으로 잡아놓았으니.. 다른값이면 경로가 존재함
+            if path[i][current] != -1 and not visited[path[i][current]]:
+                #방문하기
+                stack.append(path[i][current])
+                visited[path[i][current]] = 1
+                # break
+        # else:
+        #         #     stack.pop()
+    # while 전체 종료 >> 탐색 종료 >> return이 안됨! >> 99번에 가는 경로를 찾지 못함
+    return 0
+
+
+T = 10
+for _ in range(T):
+    tc, E = map(int, input().split())
+    path = [[-1]*100 for _ in range(2)]
+    # E*2의 길이를 가지는 data
+    data = list(map(int,input().split()))
+    visited = [0] * 100
+    for i in range(0,E*2,2):
+         # data[i]출발점, data[i+1] 도착점
+        if path[0][data[i]] == -1:
+            path[0][data[i]] = data[i+1]
+        else:
+            path[1][data[i]] = data[i + 1]
+
+    #경로 탐색(dfs)
+    # result = dfs()
+    result = dfs2(0,visited)
+    print(f'#{tc} {result}')
